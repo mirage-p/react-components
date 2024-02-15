@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import data from "./data";
 import './style.css';
 
@@ -8,9 +8,13 @@ export default function Accordion() {
     const [multiSelectionEnabled, setmultiSelectionEnabled] = useState(false);
     const [multiple, setMultiple] = useState([]);
 
-    function handleSingleSelection(getCurrentId) {
-        setSelected(getCurrentId === selected ? null : getCurrentId);
-    }
+    useEffect(() => {
+        if (multiSelectionEnabled) {
+            setSelected(null);
+        } else {
+            setMultiple([]);
+        }
+    }, [multiSelectionEnabled])
 
     function handleMultiSelection(getCurrentId) {
         let cpyMultiple = [...multiple];
@@ -24,6 +28,14 @@ export default function Accordion() {
         setMultiple(cpyMultiple)
     }
 
+    function handleClick(getCurrentId) {
+        if (multiSelectionEnabled) {
+            handleMultiSelection(getCurrentId)
+        } else {
+            setSelected(getCurrentId === selected ? null : getCurrentId);
+        }
+    }
+
     console.log(selected, multiple)
 
     return <div className="wrapper">
@@ -35,11 +47,8 @@ export default function Accordion() {
                 data && data.length > 0 ? (
                     data.map((dataItem) =>
                     (
-                        <div className="item">
-                            <div onClick={multiSelectionEnabled
-                                ? () => handleMultiSelection(dataItem.id)
-                                : () => handleSingleSelection(dataItem.id)
-                            }
+                        <div className="item" key={dataItem.id}>
+                            <div onClick={() => handleClick(dataItem.id)}
                                 className="title">
                                 <h3>{dataItem.question}</h3>
                                 <span>+</span>
