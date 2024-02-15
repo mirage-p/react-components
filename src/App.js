@@ -1,6 +1,7 @@
 import './App.css';
 import Accordion from './components/accordion';
 import RandomColor from './components/random-color';
+import UseStateEx from './hooks';
 
 function App() {
   return (
@@ -9,6 +10,8 @@ function App() {
       <Accordion></Accordion>
       {/* Random Color Component */}
       <RandomColor></RandomColor>
+      {/* useState Hook */}
+      <UseStateEx></UseStateEx>
     </div>
   );
 }
